@@ -1,39 +1,49 @@
 import React, { Component } from "react";
-import Todo from "./Todo";
 import logo from "./logo.svg";
 import "./App.css";
+import Todo from "./Todo";
 
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      todos: [],
-      todoInput: ""
+      list: [],
+      input: ""
     };
-    this.handleClick = this.handleClick.bind(this);
-  }
-  handleChange(val) {
-    this.setState({ todoInput: val });
+
+    this.handleAddTask = this.handleAddTask.bind(this);
   }
 
-  handleClick(){
-    
+  handleInputChange(value) {
+    this.setState({ input: value });
+  }
+
+  handleAddTask() {
+    this.setState({
+      list: [...this.state.list, this.state.input],
+      input: ""
+    });
   }
 
   render() {
+    let list = this.state.list.map((element, index) => {
+      return <Todo key={index} task={element} />;
+    });
     return (
       <div className="App">
         <div>
           <h1>Todo List:</h1>
           <input
+            value={this.state.input}
             type="text"
             placeholder="todo"
-            onChange={e => this.handleChange(e.target.value)}
+            onChange={e => this.handleInputChange(e.target.value)}
           />
-          <button onClick={ this.handleClick}>Add</button>
+          <button onClick={this.handleAddTask}>Add</button>
         </div>
-        <h3> {Todo} </h3>
+        <br />
+        {list}
       </div>
     );
   }
